@@ -1,10 +1,16 @@
 var MongoClient = require("vertx-mongo-js/mongo_client");
+var ConfigRetriever = require("vertx-config-js/config_retriever");
 
 var eventBus = vertx.eventBus();
 
+var retriever = ConfigRetriever.create(vertx);
+retriever.getConfig(function(ar, ar_err) {
+
+console.log(ar);
+
 var config = {
     "db_name": "mindMaps"
-    , "connection_string": "mongodb://mongo:27017"
+    , "connection_string": java.lang.System.getenv("MONGODB_URI") | "mongodb://mongo:27017";
 };
 
 var mongoClient = MongoClient.createShared(vertx, config);
@@ -56,4 +62,6 @@ eventBus.consumer('mindMaps.delete', function(message) {
             console.log(res_err);
         }
     });
+});
+
 });

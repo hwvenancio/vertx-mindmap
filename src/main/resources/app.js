@@ -25,8 +25,12 @@ var staticHandler = StaticHandler.create();
 router.route("/*").handler(staticHandler.handle);
 
 var server = vertx.createHttpServer();
-//var port = config().getInteger("http.port", 8080);
-var port = Vertx.currentContext().config().port | 8080;
+var port = Number(java.lang.System.getProperty("http.port", "8080"));
+console.log(port);
+//var port = Vertx.currentContext().config().getInteger("http.port", 8080);
+//var config = Vertx.currentContext().config();
+//console.log(config);
+//var port = config.port | 8080;
 server.requestHandler(router.accept).listen(port);
 
 vertx.deployVerticle('server/mindmaps.js');
