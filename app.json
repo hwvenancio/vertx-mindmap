@@ -1,0 +1,8 @@
+{
+  "name": "vert.x mindmap",
+  "logo": "http://vertx.io/logo-white-big.png",
+  "keywords": ["vertx", "mindmap"],
+  "env": {
+    "BUILDPACK_URL": "https://github.com/mthenw/heroku-buildpack-vertx.git"
+  }
+}

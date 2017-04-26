@@ -1,0 +1,1 @@
+vertx run app.js
