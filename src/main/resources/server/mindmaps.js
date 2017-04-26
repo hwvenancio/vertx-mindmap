@@ -10,7 +10,7 @@ retriever.getConfig(function(ar, ar_err) {
 
 var config = {
     "db_name": "mindMaps"
-    , "connection_string": java.lang.System.getProperty("MONGODB_URI", "mongodb://mongo:27017")
+    , "connection_string": java.lang.System.getenv("MONGODB_URI") || "mongodb://mongo:27017"
 };
 
 var mongoClient = MongoClient.createShared(vertx, config);
