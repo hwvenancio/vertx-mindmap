@@ -25,7 +25,9 @@ var staticHandler = StaticHandler.create();
 router.route("/*").handler(staticHandler.handle);
 
 var server = vertx.createHttpServer();
-server.requestHandler(router.accept).listen(8080);
+//var port = config().getInteger("http.port", 8080);
+var port = Vertx.currentContext().config().port | 8080;
+server.requestHandler(router.accept).listen(port);
 
 vertx.deployVerticle('server/mindmaps.js');
 vertx.deployVerticle('server/mindmap_editor.js');
