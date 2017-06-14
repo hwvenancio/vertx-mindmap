@@ -13,7 +13,8 @@ node {
     }
     stage('Deploy') {
         echo 'Deploying....'
-        sh "docker build localhost:5000/vertx-mindmap"
-        sh "docker push localhost:5000/vertx-mindmap"
+        unstash 'working-copy'
+        def image = docker.build "localhost:5000/vertx-mindmap"
+        image.push "localhost:5000/vertx-mindmap"
     }
 }
