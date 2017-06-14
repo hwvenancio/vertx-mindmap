@@ -1,6 +1,6 @@
 node {
     checkout scm
-    def mvnHome = tool 'maven-3'
+    def mvnHome = tool 'maven-3.5.0'
     stage('Build') {
         echo 'Building....'
         sh "${mvnHome}/bin/mvn clean install -DskipTests"
