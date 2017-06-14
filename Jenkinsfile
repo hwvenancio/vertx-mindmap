@@ -13,5 +13,7 @@ node {
     }
     stage('Deploy') {
         echo 'Deploying....'
+        sh "docker build localhost:5000/vertx-mindmap"
+        sh "docker push localhost:5000/vertx-mindmap"
     }
 }
