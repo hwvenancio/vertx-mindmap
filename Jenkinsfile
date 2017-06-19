@@ -7,15 +7,15 @@ node {
         stash 'working-copy'
     }
     stage('Test') {
-        echo 'Testing....'
         unstash 'working-copy'
+        echo 'Testing....'
         sh "${mvnHome}/bin/mvn verify"
     }
     stage('Deploy') {
-        echo 'Deploying....'
         unstash 'working-copy'
-        docker.withRegistry "http://localhost:5000" {
-            def image = docker.build "localhost:5000/vertx-mindmap"
+        echo 'Deploying....'
+        def image = docker.build "localhost:5000/vertx-mindmap"
+        docker.withRegistry("http://localhost:5000") {
             image.push "localhost:5000/vertx-mindmap"
         }
     }
