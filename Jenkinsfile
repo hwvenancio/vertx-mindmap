@@ -14,9 +14,9 @@ node {
     stage('Deploy') {
         unstash 'working-copy'
         echo 'Deploying....'
-        def image = docker.build "localhost:5000/vertx-mindmap"
         docker.withRegistry("http://localhost:5000") {
-            image.push "localhost:5000/vertx-mindmap"
+            def image = docker.build "vertx-mindmap"
+            image.push "vertx-mindmap"
         }
     }
 }
