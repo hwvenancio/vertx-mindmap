@@ -2,7 +2,7 @@
 FROM vertx/vertx3
 
 # Set the name of the verticle to deploy
-ENV VERTICLE_NAME a_pp.js
+EV VERTICLE_NAME app.js
 
 # Set the location of the verticles
 ENV VERTICLE_HOME /usr/verticles
