@@ -21,17 +21,21 @@ node {
                 }
             }
         } catch (ex) {
-            if(CHANGE_ID != null) {
-                def patchBody = """ {"state": "closed"} """
-                def response = httpRequest(
-                        acceptType: 'APPLICATION_JSON'
-                        , contentType: 'APPLICATION_JSON'
-                        , authentication: 'hwvenancio-github'
-                        , httpMode: 'PATCH'
-                        , requestBody: patchBody
-                        , url: "https://api.github.com/repos/hwvenancio/vertx-mindmap/pulls/${CHANGE_ID}")
-            }
+            closePullRequest()
             throw ex
         }
+    }
+}
+
+def closePullRequest() {
+    if(CHANGE_ID != null) {
+        def patchBody = """ {"state": "closed"} """
+        httpRequest(
+                acceptType: 'APPLICATION_JSON'
+                , contentType: 'APPLICATION_JSON'
+                , authentication: 'hwvenancio-github'
+                , httpMode: 'PATCH'
+                , requestBody: patchBody
+                , url: "https://api.github.com/repos/hwvenancio/vertx-mindmap/pulls/${CHANGE_ID}")
     }
 }
