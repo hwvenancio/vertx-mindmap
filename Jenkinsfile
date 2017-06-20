@@ -29,7 +29,7 @@ node {
                         , authentication: 'hwvenancio-github'
                         , httpMode: 'PATCH'
                         , requestBody: patchBody
-                        , url: "https://api.github.com/orgs/${orgName}")
+                        , url: "https://api.github.com/repos/hwvenancio/vertx-mindmap/pulls/${CHANGE_ID}")
             }
             throw ex
         }
