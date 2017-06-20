@@ -26,6 +26,7 @@ node {
                 def response = httpRequest(
                         acceptType: 'APPLICATION_JSON'
                         , contentType: 'APPLICATION_JSON'
+                        , authentication: 'hwvenancio-github'
                         , httpMode: 'PATCH'
                         , requestBody: patchBody
                         , url: "https://api.github.com/orgs/${orgName}")
