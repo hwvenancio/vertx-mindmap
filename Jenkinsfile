@@ -1,3 +1,5 @@
+@Library("liferay-sdlc-jenkins-lib") import static org.liferay.sdlc.SDLCPrUtilities.*
+
 node {
     checkout scm
     withEnv(["PATH+MAVEN=${tool 'maven-3.5.0'}/bin"]) {
@@ -21,21 +23,8 @@ node {
                 }
             }
         } catch (ex) {
-            closePullRequest()
+            handleError("hwvenancio/vertx-mindmap", "hwvenancio@gmail.com", "hwvenancio-github")
             throw ex
         }
-    }
-}
-
-def closePullRequest() {
-    if(CHANGE_ID != null) {
-        def patchBody = """ {"state": "closed"} """
-        httpRequest(
-                acceptType: 'APPLICATION_JSON'
-                , contentType: 'APPLICATION_JSON'
-                , authentication: 'hwvenancio-github'
-                , httpMode: 'PATCH'
-                , requestBody: patchBody
-                , url: "https://api.github.com/repos/hwvenancio/vertx-mindmap/pulls/${CHANGE_ID}")
     }
 }
