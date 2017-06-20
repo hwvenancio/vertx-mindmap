@@ -2,6 +2,8 @@ var Router = require("vertx-web-js/router");
 var StaticHandler = require("vertx-web-js/static_handler");
 var SockJSHandler = require("vertx-web-js/sock_js_handler");
 
+console.log("Starting app.js");
+
 var options = {
     "inboundPermitteds" : [
         {"address" : 'mindMaps.list' }
