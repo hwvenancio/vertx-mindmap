@@ -19,7 +19,7 @@ node {
                 echo 'Deploying....'
                 docker.withRegistry("http://localhost:5000") {
                     def image = docker.build("vertx-mindmap:${BRANCH_NAME}")
-                    image.push()
+                    image.push("${BRANCH_NAME}")
                 }
             }
         } catch (ex) {
