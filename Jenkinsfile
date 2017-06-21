@@ -28,7 +28,7 @@ node {
             throw ex
         }
         input message: "Release?"
-        state('release-dryrun') {
+        stage('release-dryrun') {
             unstash 'working-copy'
             echo 'Releasing'
             sh "mvn --batch-mode release:prepare"
