@@ -1,4 +1,4 @@
-@Library("liferay-sdlc-jenkins-lib") import static org.liferay.sdlc.SDLCPrUtilities.*
+//@Library("liferay-sdlc-jenkins-lib") import static org.liferay.sdlc.SDLCPrUtilities.*
 
 node {
     checkout scm
@@ -12,7 +12,7 @@ node {
             stage('Test') {
                 unstash 'working-copy'
                 echo 'Testing....'
-                sh "mvn --batch-mode -V -U verify"
+                sh "mvn --batch-mode verify"
             }
             stage('Deploy') {
                 unstash 'working-copy'
@@ -23,8 +23,28 @@ node {
                 }
             }
         } catch (ex) {
-            handleError("hwvenancio/vertx-mindmap", "hwvenancio@gmail.com", "hwvenancio-github")
+//            handleError("hwvenancio/vertx-mindmap", "hwvenancio@gmail.com", "hwvenancio-github")
+            closePullRequest()
             throw ex
         }
+        input message: "Release?"
+        state('release-dryrun') {
+            unstash 'working-copy'
+            echo 'Releasing'
+            sh "mvn --batch-mode release:prepare"
+        }
+    }
+}
+
+def closePullRequest() {
+    if(CHANGE_ID != null) {
+        def patchBody = """ {"state": "closed"} """
+        httpRequest(
+                acceptType: 'APPLICATION_JSON'
+                , contentType: 'APPLICATION_JSON'
+                , authentication: 'hwvenancio-github'
+                , httpMode: 'PATCH'
+                , requestBody: patchBody
+                , url: "https://api.github.com/repos/hwvenancio/vertx-mindmap/pulls/${CHANGE_ID}")
     }
 }
