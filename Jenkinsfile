@@ -1,5 +1,14 @@
 //@Library("liferay-sdlc-jenkins-lib") import static org.liferay.sdlc.SDLCPrUtilities.*
 
+properties([
+    parameters([
+        booleanParam(
+            defaultValue: false
+            , description: 'Runs release step'
+            , name: 'RELEASE')
+    ])
+])
+
 node {
     checkout scm
     withEnv(["PATH+MAVEN=${tool 'maven-3.5.0'}/bin"]) {
@@ -27,11 +36,12 @@ node {
             closePullRequest()
             throw ex
         }
-        input message: "Release?"
-        stage('release-dryrun') {
-            unstash 'working-copy'
-            echo 'Releasing'
-            sh "mvn --batch-mode release:prepare"
+        if (params.RELEASE) {
+            stage('release-dryrun') {
+                unstash 'working-copy'
+                echo 'Releasing'
+                sh "mvn --batch-mode release:prepare"
+            }
         }
     }
 }
