@@ -6,7 +6,26 @@
 
     <groupId>test.vertx</groupId>
     <artifactId>vertx-mindmap</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/hwvenancio/vertx-mindmap/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/hwvenancio/vertx-mindmap</url>
+        <connection>scm:git:git://github.com/hwvenancio/vertx-mindmap.git</connection>
+        <developerConnection>scm:git:git@github.com:hwvenancio/vertx-mindmap.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <main.verticle>app.js</main.verticle>

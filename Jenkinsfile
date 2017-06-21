@@ -23,12 +23,19 @@ node {
                 echo 'Testing....'
                 sh "mvn --batch-mode verify"
             }
-            stage('Deploy') {
-                unstash 'working-copy'
-                echo 'Deploying....'
-                docker.withRegistry("http://localhost:5000") {
-                    def image = docker.build("vertx-mindmap:${BRANCH_NAME}")
-                    image.push("${BRANCH_NAME}")
+            if(BRANCH_NAME == 'master') {
+                stage('Deploy-Maven') {
+                    unstash 'working-copy'
+                    echo 'Deploying maven artifact...'
+                    sh "mvn --batch-mode deploy"
+                }
+                stage('Deploy-Docker') {
+                    unstash 'working-copy'
+                    echo 'Deploying....'
+                    docker.withRegistry("http://localhost:5000") {
+                        def image = docker.build("vertx-mindmap:${BRANCH_NAME}")
+                        image.push("${BRANCH_NAME}")
+                    }
                 }
             }
         } catch (ex) {
@@ -39,8 +46,8 @@ node {
         if (params.RELEASE) {
             stage('release-dryrun') {
                 unstash 'working-copy'
-                echo 'Releasing'
-                sh "mvn --batch-mode release:prepare"
+                echo 'Releasing...'
+                sh "mvn --batch-mode release:prepare release:perform"
             }
         }
     }
