@@ -22,6 +22,8 @@ node {
                 unstash 'working-copy'
                 echo 'Testing....'
                 sh "mvn --batch-mode verify"
+                junit 'target/surefire-reports/*.xml'
+                junit 'target/failsafe-reports/*.xml'
                 stash 'working-copy'
             }
             if(BRANCH_NAME == 'master') {
