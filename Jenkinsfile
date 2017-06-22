@@ -22,21 +22,22 @@ node {
                 unstash 'working-copy'
                 echo 'Testing....'
                 sh "mvn --batch-mode verify"
+                stash 'working-copy'
             }
             if(BRANCH_NAME == 'master') {
                 stage('Deploy-Maven') {
                     unstash 'working-copy'
                     echo 'Deploying maven artifact...'
-                    sh "mvn --batch-mode deploy"
+                    sh "mvn --batch-mode deploy -DskipTests"
                 }
-                stage('Deploy-Docker') {
-                    unstash 'working-copy'
-                    echo 'Deploying....'
-                    docker.withRegistry("http://localhost:5000") {
-                        def image = docker.build("vertx-mindmap:${BRANCH_NAME}")
-                        image.push("${BRANCH_NAME}")
-                    }
-                }
+//                stage('Deploy-Docker') {
+//                    unstash 'working-copy'
+//                    echo 'Deploying....'
+//                    docker.withRegistry("http://localhost:5000") {
+//                        def image = docker.build("vertx-mindmap:${BRANCH_NAME}")
+//                        image.push("${BRANCH_NAME}")
+//                    }
+//                }
             }
         } catch (ex) {
 //            handleError("hwvenancio/vertx-mindmap", "hwvenancio@gmail.com", "hwvenancio-github")

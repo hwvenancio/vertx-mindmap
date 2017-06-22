@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dhttp.port=$PORT -jar target/vertx-mindmap-*-fat.jar
+web: java $JAVA_OPTS -Dmongodb.uri=$MONGODB_URI -Dhttp.port=$PORT -jar target/vertx-mindmap-*-fat.jar
