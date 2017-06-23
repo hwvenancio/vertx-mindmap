@@ -11,8 +11,15 @@ properties([
 
 node {
     checkout scm
-    withEnv(["PATH+MAVEN=${tool 'maven-3.5.0'}/bin"]) {
+    sh 'echo M2_HOME = $M2_HOME'
+    echo 'M2_HOME = $M2_HOME'
+    def mvnHome = tool 'maven-3.5.0'
+    sh 'echo M2_HOME = $M2_HOME'
+    echo 'M2_HOME = $M2_HOME'
+    withEnv(["M2_HOME=$mvnHome", "PATH+MAVEN=$mvnHome/bin"]) {
         try {
+            sh 'echo M2_HOME = $M2_HOME'
+            echo 'M2_HOME = $M2_HOME'
             stage('Build') {
                 echo 'Building....'
                 sh 'which mvn'
