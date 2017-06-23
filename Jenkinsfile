@@ -15,6 +15,7 @@ node {
         try {
             stage('Build') {
                 echo 'Building....'
+                sh 'which mvn'
                 sh "mvn --batch-mode -V -U clean install -DskipTests"
                 stash 'working-copy'
             }
