@@ -27,7 +27,7 @@ public class RunJSTest {
     }
 
     @Test
-    public void runJS(TestContext context) {
-        vertx.deployVerticle("testsuite.js", context.asyncAssertSuccess());
+    public void mindmapEditor(TestContext context) {
+        vertx.deployVerticle("mindmap_editor_testsuite.js", context.asyncAssertSuccess());
     }
 }
