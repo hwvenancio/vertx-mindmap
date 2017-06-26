@@ -40,8 +40,8 @@ node {
 //                    unstash 'working-copy'
 //                    echo 'Deploying....'
 //                    docker.withRegistry("http://localhost:5000") {
-//                        def image = docker.build("vertx-mindmap:${BRANCH_NAME}")
-//                        image.push("${BRANCH_NAME}")
+//                        def image = docker.build("vertx-mindmap:${env.BRANCH_NAME}")
+//                        image.push("${env.BRANCH_NAME}")
 //                    }
 //                }
             }
@@ -61,7 +61,7 @@ node {
 }
 
 def closePullRequest() {
-    if(CHANGE_ID != null) {
+    if(env.CHANGE_ID != null) {
         def patchBody = """ {"state": "closed"} """
         httpRequest(
                 acceptType: 'APPLICATION_JSON'
@@ -69,6 +69,6 @@ def closePullRequest() {
                 , authentication: 'hwvenancio-github'
                 , httpMode: 'PATCH'
                 , requestBody: patchBody
-                , url: "https://api.github.com/repos/hwvenancio/vertx-mindmap/pulls/${CHANGE_ID}")
+                , url: "https://api.github.com/repos/hwvenancio/vertx-mindmap/pulls/${env.CHANGE_ID}")
     }
 }
