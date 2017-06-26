@@ -23,7 +23,9 @@ node {
             stage('Test') {
                 unstash 'working-copy'
                 echo 'Testing....'
-                sh "mvn --batch-mode verify"
+                wrap([$class: 'Xvnc']) {
+                    sh "mvn --batch-mode verify"
+                }
                 junit 'target/surefire-reports/*.xml'
                 junit 'target/failsafe-reports/*.xml'
                 stash 'working-copy'
