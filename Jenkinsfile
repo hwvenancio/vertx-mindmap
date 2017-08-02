@@ -35,15 +35,19 @@ node {
                 sh 'mvn --batch-mode release:clean'
             }
             if(BRANCH_NAME == 'master') {
+                milestone()
                 stage('Deploy-Maven') {
                     echo 'Deploying maven artifact...'
                     sh "mvn --batch-mode deploy -DskipTests -DskipITs"
                 }
-                stage(name: 'Deploy-Docker', concurrency: 1) {
-                    echo 'Deploying....'
-                    docker.withRegistry("http://localhost:5000") {
-                        def image = docker.build("vertx-mindmap:${env.BRANCH_NAME}")
-                        image.push("${env.BRANCH_NAME}")
+                milestone()
+                lock(resource: 'docker') {
+                    stage(name: 'Deploy-Docker') {
+                        echo 'Deploying....'
+                        docker.withRegistry("http://localhost:5000") {
+                            def image = docker.build("vertx-mindmap:${env.BRANCH_NAME}")
+                            image.push("${env.BRANCH_NAME}")
+                        }
                     }
                 }
             }
