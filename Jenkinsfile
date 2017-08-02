@@ -1,4 +1,3 @@
-//@Library("liferay-sdlc-jenkins-lib") import static org.liferay.sdlc.SDLCPrUtilities.*
 
 properties([
     parameters([
@@ -17,42 +16,43 @@ node {
             stage('Build') {
                 echo 'Building....'
                 sh 'command -V mvn'
-                sh "mvn --batch-mode -V -U clean install -DskipTests"
-                stash 'working-copy'
+                sh 'mvn --batch-mode -V -U clean install -DskipTests -DskipITs'
             }
             stage('Test') {
-                unstash 'working-copy'
                 echo 'Testing....'
-                wrap([$class: 'Xvnc']) {
-                    sh "mvn --batch-mode verify"
+                try {
+                    wrap([$class: 'Xvnc']) {
+                        sh 'mvn --batch-mode verify'
+                    }
+                } finally {
+                    junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
+                    junit testResults: 'target/failsafe-reports/*.xml', allowEmptyResults: true
                 }
-                junit 'target/surefire-reports/*.xml'
-                junit 'target/failsafe-reports/*.xml'
-                stash 'working-copy'
+            }
+            stage('Test-Release') {
+                echo 'Release Dry Run....'
+                sh 'mvn --batch-mode release:prepare -DdryRun=true -DskipTests -DskipITs'
+                sh 'mvn --batch-mode release:clean'
             }
             if(BRANCH_NAME == 'master') {
                 stage('Deploy-Maven') {
-                    unstash 'working-copy'
                     echo 'Deploying maven artifact...'
-                    sh "mvn --batch-mode deploy -DskipTests"
+                    sh "mvn --batch-mode deploy -DskipTests -DskipITs"
                 }
-//                stage('Deploy-Docker') {
-//                    unstash 'working-copy'
-//                    echo 'Deploying....'
-//                    docker.withRegistry("http://localhost:5000") {
-//                        def image = docker.build("vertx-mindmap:${env.BRANCH_NAME}")
-//                        image.push("${env.BRANCH_NAME}")
-//                    }
-//                }
+                stage(name: 'Deploy-Docker', concurrency: 1) {
+                    echo 'Deploying....'
+                    docker.withRegistry("http://localhost:5000") {
+                        def image = docker.build("vertx-mindmap:${env.BRANCH_NAME}")
+                        image.push("${env.BRANCH_NAME}")
+                    }
+                }
             }
         } catch (ex) {
-//            handleError("hwvenancio/vertx-mindmap", "hwvenancio@gmail.com", "hwvenancio-github")
             closePullRequest()
             throw ex
         }
         if (params.RELEASE) {
-            stage('release-dryrun') {
-                unstash 'working-copy'
+            stage('Release') {
                 echo 'Releasing...'
                 sh "mvn --batch-mode release:prepare release:perform"
             }
