@@ -37,6 +37,16 @@ suite = suite.before(function (context) {
   console.log("after exit");
 });
 
-var completion = suite.run();
 
-//completion.await();
+var completion = suite.run(vertx, testOptions());
+
+function testOptions() {
+  var junitReport = {
+    "to" : "file:target/surefire-reports/.",
+    "format" : "junit"
+  };
+
+  return {
+    "reporters" : [ junitReport ]
+  };
+}
