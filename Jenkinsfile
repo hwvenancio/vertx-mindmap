@@ -9,6 +9,7 @@ properties([
 ])
 
 node {
+    deleteDir()
     checkout scm
     def mvnHome = tool 'maven-3.5.0'
     withEnv(["M2_HOME=$mvnHome", "PATH+MAVEN=$mvnHome/bin"]) {
