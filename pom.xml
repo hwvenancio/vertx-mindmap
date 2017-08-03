@@ -32,6 +32,7 @@
         <main.verticle>app.js</main.verticle>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <skipTests>false</skipTests>
         <skipITs>false</skipITs>
     </properties>
 
@@ -171,6 +172,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipTests}</skip>
                             <classpathScope>test</classpathScope>
                             <executable>${java.home}/bin/java</executable>
                             <arguments>
