@@ -59,7 +59,7 @@ node {
         if (params.RELEASE) {
             stage('Release') {
                 echo 'Releasing...'
-                sh "mvn --batch-mode release:prepare release:perform"
+                sh "mvn --batch-mode -Dresume=false release:prepare release:perform"
             }
         }
     }

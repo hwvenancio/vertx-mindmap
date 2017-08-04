@@ -6,7 +6,6 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -14,7 +13,6 @@ import org.junit.runner.RunWith;
  * Created by herbert on 22/06/17.
  */
 @RunWith(VertxUnitRunner.class)
-@Ignore
 public class MindmapEditorTest {
 
     private static final String MINDMAP_EDITOR_ID = "mindmap_editor-ID";
