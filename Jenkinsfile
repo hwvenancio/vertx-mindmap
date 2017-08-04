@@ -15,7 +15,8 @@ node {
     withEnv(["M2_HOME=$mvnHome", "PATH+MAVEN=$mvnHome/bin"]) {
         try {
             stage('Build') {
-                echo 'Building....'
+                def pom = readMavenPom
+                echo "Building.... version=${pom.version}"
                 sh 'command -V mvn'
                 sh 'mvn --batch-mode -V -U clean install -DskipTests -DskipITs'
             }
