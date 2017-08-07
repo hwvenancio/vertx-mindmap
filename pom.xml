@@ -4,7 +4,7 @@
 
     <groupId>test.vertx</groupId>
     <artifactId>vertx-mindmap</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.4-SNAPSHOT</version>
 
     <issueManagement>
         <system>GitHub Issues</system>
