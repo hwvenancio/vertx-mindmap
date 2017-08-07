@@ -90,6 +90,11 @@ def createPostBuildBranch(project) {
     def tagName = "${project.artifactId}-${tagVersion}"
     def pbVersion = project.version.replace('-SNAPSHOT', '.1-SNAPSHOT')
     def pbBranch = tagVersion + ".X"
-    sh "git checkout $tagName"
-    sh "mvn -Dtag=$tagName -DdevelopmentVersion=$pbVersion -DbranchName=$pbBranch -DupdateBranchVersions=true -DreleaseVersion=$pbVersion release:branch"
+    sh """
+        git checkout -b $pbBranch $tagName
+        mvn release:update-versions -DdevelopmentVersion=$pbVersion
+        git add pom.xml
+        git commit -m "[jenkins-pipeline] prepare post-build branch $pbBranch"
+        git push origin $pbBranch
+    """
 }
