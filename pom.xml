@@ -4,7 +4,7 @@
 
     <groupId>test.vertx</groupId>
     <artifactId>vertx-mindmap</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
 
     <issueManagement>
         <system>GitHub Issues</system>
@@ -15,7 +15,7 @@
         <url>https://github.com/hwvenancio/vertx-mindmap</url>
         <connection>scm:git:git://github.com/hwvenancio/vertx-mindmap.git</connection>
         <developerConnection>scm:git:git@github.com:hwvenancio/vertx-mindmap.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>vertx-mindmap-1.0.3</tag>
   </scm>
 
     <distributionManagement>
