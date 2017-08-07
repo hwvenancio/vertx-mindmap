@@ -91,5 +91,5 @@ def createPostBuildBranch(project) {
     def pbVersion = project.version.replace('-SNAPSHOT', '.1-SNAPSHOT')
     def pbBranch = tagVersion + ".X"
     sh "git checkout $tagName"
-    sh "mvn -Dtag=$tagName -DbranchName=$pbBranch -DreleaseVersion=$pbVersion -DupdateWorkingCopyVersions=false -DupdateBranchVersions=true release:branch"
+    sh "mvn -Dtag=$tagName -DdevelopmentVersion=$pbVersion -DbranchName=$pbBranch -DupdateBranchVersions=true -DreleaseVersion=$pbVersion release:branch"
 }
