@@ -60,8 +60,12 @@ node {
         if (params.RELEASE) {
             stage('Release') {
                 echo 'Releasing...'
+                sh 'git checkout master'
                 def project = readMavenPom file: ''
-                sh "mvn --batch-mode -Dresume=false release:prepare release:perform"
+                echo "before ${project.version}"
+                sh 'mvn --batch-mode -Dresume=false release:prepare release:perform -Darguments="-DskipTests -DskipITs"'
+                def after = readMavenPom file: ''
+                echo "after ${after.version}"
                 createPostBuildBranch(project)
             }
         }
