@@ -87,8 +87,9 @@ def closePullRequest() {
 
 def createPostBuildBranch(project) {
     def tagVersion = project.version.replace('-SNAPSHOT', '')
-    def devVersion = project.version.replace('-SNAPSHOT', '.1-SNAPSHOT')
     def tagName = "${project.artifactId}-${tagVersion}"
-    def branch = tagVersion + ".X"
-    sh "mvn -Dtag=$tagName -DdevelopmentVersion=$devVersion -DbranchName=$branch -DreleaseVersion=$devVersion -DupdateBranchVersions=true release:branch"
+    def pbVersion = project.version.replace('-SNAPSHOT', '.1-SNAPSHOT')
+    def pbBranch = tagVersion + ".X"
+    sh "git checkout $tagName"
+    sh "mvn -Dtag=$tagName -DbranchName=$pbBranch -DreleaseVersion=$pbVersion -DupdateWorkingCopyVersions=false -DupdateBranchVersions=true release:branch"
 }
