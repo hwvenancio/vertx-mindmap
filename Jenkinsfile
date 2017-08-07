@@ -33,7 +33,7 @@ node {
             }
             stage('Test-Release') {
                 echo 'Release Dry Run....'
-                sh 'mvn --batch-mode release:prepare -DdryRun=true -DskipTests -DskipITs'
+                sh 'mvn --batch-mode release:prepare -DdryRun=true -Darguments="-DskipTests -DskipITs"'
                 sh 'mvn --batch-mode release:clean'
             }
             if(BRANCH_NAME == 'master') {
