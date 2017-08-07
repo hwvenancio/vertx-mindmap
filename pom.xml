@@ -15,7 +15,7 @@
         <url>https://github.com/hwvenancio/vertx-mindmap</url>
         <connection>scm:git:git://github.com/hwvenancio/vertx-mindmap.git</connection>
         <developerConnection>scm:git:git@github.com:hwvenancio/vertx-mindmap.git</developerConnection>
-      <tag>1.0.1.X</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
