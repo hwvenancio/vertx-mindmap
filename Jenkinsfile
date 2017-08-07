@@ -15,8 +15,8 @@ node {
     withEnv(["M2_HOME=$mvnHome", "PATH+MAVEN=$mvnHome/bin"]) {
         try {
             stage('Build') {
-                def pom = readMavenPom(file:'')
-                echo "Building.... version=${pom.version}"
+                def project = readMavenPom file: ''
+                echo "Building ${project.artifactId} - ${project.version} ..."
                 sh 'command -V mvn'
                 sh 'mvn --batch-mode -V -U clean install -DskipTests -DskipITs'
             }
@@ -60,7 +60,9 @@ node {
         if (params.RELEASE) {
             stage('Release') {
                 echo 'Releasing...'
+                def project = readMavenPom file: ''
                 sh "mvn --batch-mode -Dresume=false release:prepare release:perform"
+                createPostBuildBranch(project)
             }
         }
     }
@@ -77,4 +79,12 @@ def closePullRequest() {
                 , requestBody: patchBody
                 , url: "https://api.github.com/repos/hwvenancio/vertx-mindmap/pulls/${env.CHANGE_ID}")
     }
+}
+
+def createPostBuildBranch(project) {
+    def tagVersion = project.version.replace('-SNAPSHOT', '')
+    def devVersion = project.version.replace('-SNAPSHOT', '.1-SNAPSHOT')
+    def tagName = "${project.artifactId}-${tagVersion}"
+    def branch = tagVersion + ".X"
+    sh "mvn -Dtag=$tagName -DdevelopmentVersion=$devVersion -DbranchName=$branch -DreleaseVersion=$devVersion -DupdateBranchVersions=true release:branch"
 }
